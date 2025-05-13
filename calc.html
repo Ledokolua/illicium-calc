@@ -1,0 +1,1005 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2566">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 8.0px 0.0px; font: 11.0px Calibri; color: #000000}
+    p.p2 {margin: 0.0px 0.0px 8.0px 0.0px; font: 11.0px Calibri; color: #000000; min-height: 13.0px}
+  </style>
+</head>
+<body>
+<p class="p1">&lt;!DOCTYPE html&gt;</p>
+<p class="p1">&lt;html lang="en"&gt;</p>
+<p class="p1">&lt;head&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta charset="UTF-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;title&gt;Revup Forge ROI Calculator&lt;/title&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;script src="https://cdn.tailwindcss.com"&gt;&lt;/script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"&gt;&lt;/script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"&gt;&lt;/script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;link rel="preconnect" href="https://fonts.googleapis.com"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;link rel="preconnect" href="https://fonts.gstatic.com" crossorigin&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;style&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>/* Custom styles */</p>
+<p class="p1"><span class="Apple-converted-space">        </span>body {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>font-family: 'Inter', sans-serif;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>scroll-behavior: smooth; /* Smooth scroll for better UX */</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>/* Hide number input spinners for a cleaner look */</p>
+<p class="p1"><span class="Apple-converted-space">        </span>input[type=number]::-webkit-inner-spin-button,</p>
+<p class="p1"><span class="Apple-converted-space">        </span>input[type=number]::-webkit-outer-spin-button {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>-webkit-appearance: none;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>margin: 0;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>input[type=number] {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>-moz-appearance: textfield; /* Firefox */</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>/* Styles for the collapsible explanation section */</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.explanation-content {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>max-height: 0;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>overflow: hidden;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>transition: max-height 0.5s ease-out; /* Smooth transition */</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.explanation-content.show {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>max-height: 1500px; /* Adjust max-height as needed for content */</p>
+<p class="p1"><span class="Apple-converted-space">            </span>transition: max-height 0.5s ease-in; /* Smooth transition */</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>/* Custom focus styles for accessibility */</p>
+<p class="p1"><span class="Apple-converted-space">        </span>input:focus, select:focus, button:focus {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>outline: 2px solid transparent;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>outline-offset: 2px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5); /* Tailwind blue-500 focus ring */</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>/* Style disabled Illicium inputs for visual clarity */</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.illicium-inputs-disabled input, .illicium-inputs-disabled select {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background-color: #f3f4f6; /* gray-100 */</p>
+<p class="p1"><span class="Apple-converted-space">            </span>cursor: not-allowed;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>opacity: 0.6; /* Make them visually distinct when disabled */</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>/* Ensure PDF content area has a white background for capture */</p>
+<p class="p1"><span class="Apple-converted-space">        </span>#pdf-content-area {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background-color: white;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>/* Style for asterisk footnote */</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.footnote {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>font-size: 0.75rem; /* text-xs */</p>
+<p class="p1"><span class="Apple-converted-space">            </span>color: #6b7280; /* gray-500 */</p>
+<p class="p1"><span class="Apple-converted-space">            </span>margin-top: 0.5rem; /* mt-2 */</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>/* Ensure consistent height for input sections in the 3-column layout */</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.input-section-column {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>display: flex;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>flex-direction: column;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>height: 100%; /* Make sections take full height of grid cell */</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.input-section-column .input-content {</p>
+<p class="p1"><span class="Apple-converted-space">             </span>flex-grow: 1; /* Allow form content to grow */</p>
+<p class="p1"><span class="Apple-converted-space">             </span>display: flex;</p>
+<p class="p1"><span class="Apple-converted-space">             </span>flex-direction: column;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.input-section-column .input-content .footnote {</p>
+<p class="p1"><span class="Apple-converted-space">             </span>margin-top: auto; /* Push footnote to bottom */</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>/* Result sections styling */</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.result-section-card {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>display: flex;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>flex-direction: column;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>/* Removed height: 100% to allow auto-height based on content */</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.result-section-card .result-content {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>flex-grow: 1; /* Allow result content to grow */</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>/* Custom separator style */</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.separator {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border-top: 1px solid #e5e7eb; /* gray-200 */</p>
+<p class="p1"><span class="Apple-converted-space">            </span>margin-top: 1rem; /* mt-4 */</p>
+<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 1rem; /* mb-4 */</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>/* Error message box style */</p>
+<p class="p1"><span class="Apple-converted-space">        </span>#error-message-box {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>transition: opacity 0.5s ease-in-out;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/style&gt;</p>
+<p class="p1">&lt;/head&gt;</p>
+<p class="p1">&lt;body class="bg-gray-50"&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div id="error-message-box" class="hidden fixed top-5 right-5 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded shadow-md z-50" role="alert"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;strong class="font-bold"&gt;Error!&lt;/strong&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;span class="block sm:inline" id="error-message-text"&gt;Something went wrong.&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;button type="button" class="absolute top-0 bottom-0 right-0 px-4 py-3" onclick="this.parentElement.classList.add('hidden')"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;svg class="fill-current h-6 w-6 text-red-500" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"&gt;&lt;title&gt;Close&lt;/title&gt;&lt;path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z"/&gt;&lt;/svg&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div id="pdf-content-area" class="p-4 sm:p-6 rounded-lg shadow-lg max-w-7xl mx-auto my-8 bg-white"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="mb-8 text-center"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;h1 class="text-3xl sm:text-4xl font-bold text-blue-900 mb-3"&gt;Revup Forge ROI Calculator&lt;/h1&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;p class="text-gray-600 text-base sm:text-lg max-w-3xl mx-auto"&gt;Estimate the financial impact of your SDR investment, including optional Illicium Fractional Sales Management and RevUp Force services.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="mb-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;h2 class="text-2xl font-semibold text-blue-900 mb-5 border-b pb-3 text-center"&gt;Input Parameters&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;form id="roi-form" class="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8"&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;section class="bg-white p-5 sm:p-6 rounded-lg shadow input-section-column"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;h3 class="text-lg font-medium text-blue-800 mb-3"&gt;Core Team Structure&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="space-y-4 input-content"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;label for="numberOfSDRs" class="block text-sm font-medium text-gray-700 mb-1"&gt;Number of SDRs&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;input id="numberOfSDRs" type="number" name="numberOfSDRs" value="2" min="0" class="w-full p-2 border border-gray-300 rounded shadow-sm focus:ring-blue-500 focus:border-blue-500"/&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;p class="text-xs text-gray-500 mt-1"&gt;Total SDRs on the team.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;label for="leadsPerSDRMonth" class="block text-sm font-medium text-gray-700 mb-1"&gt;Qualified Leads / SDR / Month&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;input id="leadsPerSDRMonth" type="number" name="leadsPerSDRMonth" value="10" min="0" class="w-full p-2 border border-gray-300 rounded shadow-sm focus:ring-blue-500 focus:border-blue-500"/&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;p class="text-xs text-gray-500 mt-1"&gt;Target for a fully ramped SDR.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                             </span>&lt;label for="sdrMonthlySalary" class="block text-sm font-medium text-gray-700 mb-1"&gt;Monthly SDR Base Salary (AUD)&lt;span class="text-red-500"&gt;*&lt;/span&gt;&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                             </span>&lt;div class="relative"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                 </span>&lt;span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-500"&gt;$&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                 </span>&lt;input id="sdrMonthlySalary" type="number" name="sdrMonthlySalary" value="2200" min="0" step="100" class="pl-7 w-full p-2 border border-gray-300 rounded shadow-sm focus:ring-blue-500 focus:border-blue-500"/&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                             </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                              </span>&lt;p class="text-xs text-gray-500 mt-1"&gt;Base salary only. Excl. variable comp, payroll tax, HR overheads (covered by RevUp Force).&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;label for="monthlySaasTools" class="block text-sm font-medium text-gray-700 mb-1"&gt;Monthly SaaS Cost / SDR (AUD)&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;div class="relative"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-500"&gt;$&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                 </span>&lt;input id="monthlySaasTools" type="number" name="monthlySaasTools" value="250" min="0" step="10" class="pl-7 w-full p-2 border border-gray-300 rounded shadow-sm focus:ring-blue-500 focus:border-blue-500"/&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;p class="text-xs text-gray-500 mt-1"&gt;e.g., CRM, Sales Nav, Data, Telephony.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                         </span>&lt;div class="footnote pt-4"&gt; &lt;span class="text-red-500"&gt;*&lt;/span&gt; Note: For Philippines-based SDRs, a mandatory 13th-month salary applies (pro-rata). This is an additional cost to consider beyond the base salary entered here.</p>
+<p class="p1"><span class="Apple-converted-space">                         </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/section&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;section class="bg-white p-5 sm:p-6 rounded-lg shadow input-section-column"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;h3 class="text-lg font-medium text-blue-800 mb-3"&gt;Sales Performance Metrics&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="space-y-4 input-content"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;label for="averageDealSize" class="block text-sm font-medium text-gray-700 mb-1"&gt;Average Deal Size (AUD)&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;div class="relative"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-500"&gt;$&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;input id="averageDealSize" type="number" name="averageDealSize" value="25000" min="0" step="100" class="pl-7 w-full p-2 border border-gray-300 rounded shadow-sm focus:ring-blue-500 focus:border-blue-500"/&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;label for="averageSalesCycle" class="block text-sm font-medium text-gray-700 mb-1"&gt;Avg. Sales Cycle (Months)&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;input id="averageSalesCycle" type="number" name="averageSalesCycle" value="4" min="0" max="36" class="w-full p-2 border border-gray-300 rounded shadow-sm focus:ring-blue-500 focus:border-blue-500"/&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;p class="text-xs text-gray-500 mt-1"&gt;Time from qualified lead to closed deal.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;label for="leadConversionRate" class="block text-sm font-medium text-gray-700 mb-1"&gt;Lead to Customer Rate (%)&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;input id="leadConversionRate" type="number" name="leadConversionRate" value="15" min="0" max="100" step="1" class="w-full p-2 border border-gray-300 rounded shadow-sm focus:ring-blue-500 focus:border-blue-500"/&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;label for="customerLifetimeValue" class="block text-sm font-medium text-gray-700 mb-1"&gt;Customer Lifetime Value Basis&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;select id="customerLifetimeValue" name="customerLifetimeValue" class="w-full p-2 border border-gray-300 rounded shadow-sm focus:ring-blue-500 focus:border-blue-500"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;option value="12"&gt;12 Months (No Renewals Calculated)&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;option value="18"&gt;18 Months (50% Year 1 Value as Renewal)&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;option value="24" selected&gt;24 Months (100% Year 1 Value as Renewal)&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/select&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;p class="text-xs text-gray-500 mt-1"&gt;Used to calculate renewal revenue and lifetime ROI.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;div class="flex items-center mt-2"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;input id="isTeamFullyRamped" type="checkbox" name="isTeamFullyRamped" class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"/&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;label for="isTeamFullyRamped" class="ml-2 block text-sm font-medium text-gray-700"&gt;Team Starts Fully Ramped&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;p id="ramp-up-note" class="text-xs text-gray-500 mt-1 pl-6 hidden"&gt;If unchecked, assumes 0 leads in month 1, then 60% productivity for months 2-4.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/section&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;section class="bg-white p-5 sm:p-6 rounded-lg shadow input-section-column"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;h3 class="text-lg font-medium text-blue-800 mb-3"&gt;Illicium Add-on Services&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="space-y-4 input-content"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                         </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                             </span>&lt;label for="revUpForceCost" class="block text-sm font-medium text-gray-700 mb-1"&gt;RevUp Force Cost / SDR / Month (AUD)&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                             </span>&lt;div class="relative"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                 </span>&lt;span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-500"&gt;$&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                 </span>&lt;input id="revUpForceCost" type="number" name="revUpForceCost" value="590" min="0" step="10" class="pl-7 w-full p-2 border border-gray-300 rounded shadow-sm focus:ring-blue-500 focus:border-blue-500"/&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                             </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                             </span>&lt;p class="text-xs text-gray-500 mt-1"&gt;Covers compliance, offshore hiring, HR &amp; Payroll, training, development &amp; community.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                         </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;div class="flex items-center mb-2"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;input id="includeFractionalSales" type="checkbox" name="includeFractionalSales" class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"/&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;label for="includeFractionalSales" class="ml-2 block text-sm font-medium text-gray-700"&gt;Include Illicium Fractional Sales Management&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;div id="fractional-inputs-container" class="grid grid-cols-1 gap-4 pl-6 border-l-2 border-blue-100 ml-2 pt-2"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;label for="salesMgmtMonthlyCost" class="block text-sm font-medium text-gray-700 mb-1"&gt;Monthly Cost (AUD)&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;div class="relative"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                        </span>&lt;span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-500"&gt;$&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                         </span>&lt;input id="salesMgmtMonthlyCost" type="number" name="salesMgmtMonthlyCost" value="5775" min="0" step="100" class="pl-7 w-full p-2 border border-gray-300 rounded shadow-sm focus:ring-blue-500 focus:border-blue-500"/&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;p class="text-xs text-gray-500 mt-1"&gt;Cost for Illicium Fractional leadership service. (Default based on SDR count)&lt;/p&gt; &lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;label for="fractionalSalesDuration" class="block text-sm font-medium text-gray-700 mb-1"&gt;Duration&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                     </span>&lt;select id="fractionalSalesDuration" name="fractionalSalesDuration" class="w-full p-2 border border-gray-300 rounded shadow-sm focus:ring-blue-500 focus:border-blue-500"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                         </span>&lt;option value="4"&gt;4 Months&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                         </span>&lt;option value="6" selected&gt;6 Months&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                         </span>&lt;option value="9"&gt;9 Months&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                         </span>&lt;option value="12"&gt;12 Months&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                         </span>&lt;/select&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;p class="text-xs text-gray-500 mt-1"&gt;How long the Illicium service is used (typically within Year 1).&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/section&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/form&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="bg-blue-50 p-5 sm:p-6 rounded-lg shadow"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;h2 class="text-2xl font-semibold text-blue-900 mb-5 border-b pb-3 text-center"&gt;Estimated Results&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="space-y-6 lg:space-y-8"&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="bg-white p-4 rounded-lg shadow-sm result-section-card"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;h3 class="text-lg font-medium text-blue-900 mb-2"&gt;Lead Generation &amp; Costs&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-3 result-content"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;p class="text-sm text-gray-600"&gt;Avg Monthly Qualified Leads&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;p class="text-lg font-bold" id="output-monthlyLeads"&gt;--&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;p class="text-xs text-gray-500 hidden" id="output-monthlyLeads-note"&gt;(Avg. during ramp/full)&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;p class="text-sm text-gray-600"&gt;Year 1 Qualified Leads&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;p class="text-lg font-bold" id="output-annualLeads"&gt;--&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;p class="text-xs text-gray-500 hidden" id="output-annualLeads-note"&gt;(Includes ramp-up period)&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;p class="text-sm text-gray-600"&gt;Cost Per Lead (CPL)&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;p class="text-lg font-bold" id="output-costPerLead"&gt;$--&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;p class="text-xs text-gray-500"&gt;(Y1 Base Inv. / Y1 Leads)&lt;/p&gt; &lt;p class="text-xs text-gray-500 hidden" id="output-cpl-note"&gt;(Excl. Frac. Mgmt Cost)&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;p class="text-sm text-gray-600"&gt;Cost Per Acquisition (CPA)&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;p class="text-lg font-bold" id="output-costPerAcquisition"&gt;$--&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;p class="text-xs text-gray-500"&gt;(Y1 Base Inv. / Y1 New Deals)&lt;/p&gt; &lt;p class="text-xs text-gray-500 hidden" id="output-cpa-note"&gt;(Excl. Frac. Mgmt Cost)&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="bg-white p-4 rounded-lg shadow-sm result-section-card"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;h3 class="text-lg font-medium text-blue-900 mb-2"&gt;Year 1 Performance&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-3 result-content"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;p class="text-sm text-gray-600"&gt;Year 1 Pipeline Generated&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;p class="text-lg font-bold" id="output-annualPipeline"&gt;$--&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;p class="text-sm text-gray-600"&gt;First Revenue Expected&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;p class="text-lg font-bold"&gt;Month &lt;span id="output-firstRevenueMonth"&gt;--&lt;/span&gt; ($&lt;span id="output-firstRevenueAmount"&gt;--&lt;/span&gt;)&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;p class="text-xs text-gray-500"&gt;(After &lt;span id="output-salesCycleDisplay"&gt;--&lt;/span&gt;-month cycle)&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;p class="text-sm text-gray-600"&gt;Year 1 New Deals Closed&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;p class="text-lg font-bold" id="output-year1Deals"&gt;--&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;p class="text-xs text-gray-500"&gt;(Based on &lt;span id="output-conversionRateDisplay"&gt;--&lt;/span&gt;% conversion)&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;p class="text-sm text-gray-600"&gt;Year 1 Total Revenue&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;p class="text-xl font-bold text-green-700" id="output-year1Revenue"&gt;$--&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;div class="sm:col-span-2"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;p class="text-sm text-gray-600"&gt;Est. Revenue from Y1 Leads Closing in Y2&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;p class="text-lg font-bold text-orange-600" id="output-unrealizedRevenueY2"&gt;$--&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;p class="text-xs text-gray-500"&gt;(Due to sales cycle delay)&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="bg-white p-4 rounded-lg shadow-sm result-section-card"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;h3 class="text-lg font-medium text-blue-900 mb-2"&gt;Year 2 Performance&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-3 result-content"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;p class="text-sm text-gray-600"&gt;Year 2 New Deals Closed&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;p class="text-lg font-bold" id="output-year2Deals"&gt;--&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;p class="text-xs text-gray-500"&gt;(Incl. deals from Y1 leads)&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;p class="text-sm text-gray-600"&gt;Year 2 New Deal Revenue&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;p class="text-lg font-bold" id="output-year2Revenue"&gt;$--&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;div id="output-renewal-section" class="hidden"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;p class="text-sm text-gray-600"&gt;Y1 Customer Renewals (in Y2)&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;p class="text-lg font-bold text-green-700" id="output-year1RenewalRevenue"&gt;$--&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;p class="text-xs text-gray-500"&gt;(Based on &lt;span id="output-ltvDisplayRenewal"&gt;--&lt;/span&gt;-month LTV)&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;p class="text-sm text-gray-600"&gt;Total Year 2 Revenue&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;p class="text-xl font-bold text-purple-800" id="output-year2TotalRevenue"&gt;$--&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;p class="text-xs text-gray-500"&gt;(New Deals + Renewals)&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="bg-white p-4 rounded-lg shadow-sm result-section-card"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;h3 class="text-lg font-medium text-blue-900 mb-2"&gt;Year 1 Financial Analysis&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="result-content space-y-3"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;div class="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;p class="text-sm text-gray-600"&gt;Avg. Monthly SDR Salary Cost&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;p class="text-lg font-bold" id="output-monthlySDRCost"&gt;$--&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                 </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;p class="text-sm text-gray-600"&gt;Avg. Monthly SaaS Cost&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;p class="text-lg font-bold" id="output-monthlySaaSCost"&gt;$--&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;hr class="separator"/&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;div id="illicium-investment-section" class="p-3 rounded-md bg-indigo-50" style="display: none;"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;h4 class="text-md font-semibold text-indigo-800 mb-2"&gt;Illicium Investment&lt;/h4&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;div class="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                        </span>&lt;p class="text-sm text-gray-600"&gt;Total Annual RevUp Force Cost&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                        </span>&lt;p class="text-lg font-bold" id="output-total-revup-cost"&gt;$--&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                        </span>&lt;p class="text-xs text-gray-500"&gt;(&lt;span id="output-sdrCountRevup"&gt;--&lt;/span&gt; SDRs x $&lt;span id="output-revupCostPerSDR"&gt;--&lt;/span&gt;/mo x 12)&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;div id="output-illiciumFracTotalCost-section"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                        </span>&lt;p class="text-sm text-gray-600"&gt;Total Illicium Fractional Mgmt Cost&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                        </span>&lt;p class="text-lg font-bold" id="output-total-illicium-mgmt-cost"&gt;$--&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                        </span>&lt;p class="text-xs text-gray-500" id="output-illicium-mgmt-calc-note"&gt;($--/mo x -- months)&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;hr class="separator"/&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;p class="text-sm font-medium text-gray-700"&gt;Total Avg. Monthly Cost (Year 1)&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;p class="text-lg font-bold text-indigo-700" id="output-monthlyTotalCost"&gt;$--&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;p class="text-xs text-gray-500"&gt;(Avg. SDR Salary + SaaS + RevUp Force + Illicium Mgmt)&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;hr class="separator"/&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;div class="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;p class="text-sm text-gray-600"&gt;Total Year 1 Investment&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;p class="text-lg font-bold" id="output-annualInvestment"&gt;$--&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;p class="text-xs text-gray-500" id="output-fractionalCostY1-note" style="display: none;"&gt;Y1 Illicium Frac. Mgmt Cost: $&lt;span id="output-fractionalCostY1"&gt;--&lt;/span&gt;&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                 </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;p class="text-sm text-gray-600"&gt;Est. Months to Breakeven&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;p class="text-lg font-bold" id="output-monthsToBreakeven"&gt;--&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;p class="text-xs text-gray-500"&gt;(Cumulative Revenue ≥ Costs)&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="bg-emerald-100 p-4 rounded-lg shadow-md result-section-card"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                         </span>&lt;h3 class="text-lg font-medium text-blue-900 mb-2"&gt;Return on Investment (ROI)&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                         </span>&lt;div class="result-content space-y-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                             </span>&lt;div class="pb-3 border-b border-gray-300 space-y-3"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                 </span>&lt;h4 class="text-md font-semibold text-blue-800 mb-2"&gt;Year 1 ROI&lt;/h4&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                 </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                     </span>&lt;p class="text-sm text-gray-700"&gt;Total Year 1 Investment&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                     </span>&lt;p class="text-lg font-bold text-blue-900" id="output-year1InvestmentDisplayROI"&gt;$--&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                 </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                 </span>&lt;div class="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                     </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                         </span>&lt;p class="text-sm text-gray-700"&gt;Year 1 Total Revenue&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                         </span>&lt;p class="text-xl font-semibold text-emerald-700" id="output-year1RevenueDisplay"&gt;$--&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                     </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                     </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                         </span>&lt;p class="text-sm text-gray-700"&gt;Year 1 ROI&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                         </span>&lt;p class="text-xl font-semibold text-emerald-700" id="output-year1ROI"&gt;--%&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                         </span>&lt;p class="text-xs text-gray-600"&gt;(Based on Y1 Revenue vs Y1 Investment)&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                     </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                 </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                 </span>&lt;div class="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;div id="output-lifetimeValue1-section" class="hidden"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                        </span>&lt;p class="text-sm text-gray-600"&gt;Lifetime Value of Y1 New Deals&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                        </span>&lt;p class="text-lg font-bold text-blue-800" id="output-year1CustomerValue"&gt;$--&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                        </span>&lt;p class="text-xs text-gray-600"&gt;(Y1 Deals x Deal Size x &lt;span id="output-ltvDisplayValue1"&gt;--&lt;/span&gt;m LTV Multiplier)&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                     </span>&lt;div id="output-lifetimeROI1-section" class="hidden"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                         </span>&lt;p class="text-sm text-gray-600"&gt;Year 1 Lifetime ROI&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                         </span>&lt;p class="text-xl font-bold text-blue-800" id="output-lifetimeROI_Year1"&gt;--%&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                         </span>&lt;p class="text-xs text-gray-600"&gt;(LTV of Y1 Deals vs Y1 Investment)&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                     </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                 </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                             </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                             </span>&lt;div class="space-y-3"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                 </span>&lt;h4 class="text-md font-semibold text-purple-800 mb-2"&gt;Year 2 ROI&lt;/h4&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                  </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                     </span>&lt;p class="text-sm text-gray-700"&gt;Total Year 2 Investment&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                     </span>&lt;p class="text-lg font-bold text-blue-900" id="output-year2InvestmentDisplayROI"&gt;$--&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                     </span>&lt;p class="text-xs text-gray-600"&gt;(Base Costs Only)&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                 </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                 </span>&lt;div class="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                     </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                         </span>&lt;p class="text-sm text-gray-700"&gt;Year 2 Total Revenue&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                         </span>&lt;p class="text-xl font-semibold text-emerald-700" id="output-year2TotalRevenueDisplay"&gt;$--&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                     </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                      </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                         </span>&lt;p class="text-sm text-gray-700"&gt;Year 2 ROI&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                         </span>&lt;p class="text-xl font-semibold text-emerald-700" id="output-year2ROI"&gt;--%&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                         </span>&lt;p class="text-xs text-gray-600"&gt;(Based on Y2 Total Revenue vs Y2 Base Inv.)&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                     </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                 </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                 </span>&lt;div class="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                      </span>&lt;div id="output-lifetimeValue2-section" class="hidden"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                         </span>&lt;p class="text-sm text-gray-600"&gt;Lifetime Value of Y2 New Deals&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                         </span>&lt;p class="text-lg font-bold text-purple-700" id="output-year2CustomerValue"&gt;$--&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                          </span>&lt;p class="text-xs text-gray-600"&gt;(Y2 Deals x Deal Size x &lt;span id="output-ltvDisplayValue2"&gt;--&lt;/span&gt;m LTV Multiplier)&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                     </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                     </span>&lt;div id="output-lifetimeROI2-section" class="hidden"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                         </span>&lt;p class="text-sm text-gray-600"&gt;Year 2 Lifetime ROI&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                         </span>&lt;p class="text-xl font-bold text-purple-700" id="output-lifetimeROI_Year2"&gt;--%&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                          </span>&lt;p class="text-xs text-gray-600"&gt;(LTV of Y2 Deals vs Y2 Base Inv.)&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                     </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                 </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                             </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                         </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                       </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="bg-white p-4 rounded-lg shadow-sm"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="flex flex-col sm:flex-row gap-3 mb-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;button id="toggle-explanations" type="button" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded transition duration-300 text-sm shadow-md"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>Show Calculation Explanations</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;button id="download-pdf-button" type="button" class="flex-1 bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded transition duration-300 text-sm shadow-md"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>Download Results as PDF</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div id="explanation-content" class="explanation-content bg-gray-100 p-4 rounded-lg shadow-inner border border-gray-200"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;h3 class="text-md font-semibold text-gray-800 mb-3"&gt;Calculation Notes&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="space-y-2 text-xs text-gray-700"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                             </span>&lt;p&gt;&lt;strong&gt;Monthly/Annual Leads:&lt;/strong&gt; SDRs x Leads/SDR/Month. Ramp-up (if selected) assumes 0 leads in month 1, then 60% productivity for months 2-4, reaching 100% from month 5.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                             </span>&lt;p&gt;&lt;strong&gt;Pipeline Generated:&lt;/strong&gt; Annual Leads (Year 1) x Average Deal Size.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                             </span>&lt;p&gt;&lt;strong&gt;New Deals &amp; Revenue Realization:&lt;/strong&gt; Calculated monthly based on leads generated &lt;code id="exp-sales-cycle"&gt;--&lt;/code&gt; months prior, using the &lt;code id="exp-conversion-rate"&gt;--&lt;/code&gt;% conversion rate.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                             </span>&lt;p&gt;&lt;strong&gt;Year 1 vs Year 2:&lt;/strong&gt; Metrics are aggregated based on when new deals *close* (Month 1-12 for Year 1, Month 13-24 for Year 2).&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                             </span>&lt;p&gt;&lt;strong&gt;Est. Revenue from Y1 Leads Closing in Y2:&lt;/strong&gt; Value of Year 1 leads expected to close in Year 2 due to sales cycle delay.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                             </span>&lt;p&gt;&lt;strong&gt;Year 1 Investment:&lt;/strong&gt; Sum of 12 months of SDR costs (Base Salary + SaaS + RevUp Force) plus any Illicium Fractional Sales Management costs incurred within the first 12 months (based on selected duration). Displayed in Financial Analysis and ROI sections.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                             </span>&lt;p&gt;&lt;strong&gt;Year 1 Base Investment:&lt;/strong&gt; Sum of 12 months of SDR base costs (Base Salary + SaaS + RevUp Force). Used for CPL &amp; CPA calculation.&lt;/p&gt; &lt;p&gt;&lt;strong&gt;Year 2 Investment:&lt;/strong&gt; Sum of 12 months of SDR base costs (Base Salary + SaaS + RevUp Force). Assumes Illicium Fractional Sales Management cost does not extend into Year 2. Displayed in ROI section.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                             </span>&lt;p&gt;&lt;strong&gt;Avg. Monthly Costs (Year 1):&lt;/strong&gt; Individual cost components (Salary, SaaS, RevUp) averaged over 12 months. Total Avg. Monthly Cost includes these plus the averaged Illicium Mgmt cost (Total Y1 Investment / 12).&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                             </span>&lt;p&gt;&lt;strong&gt;Illicium Investment:&lt;/strong&gt; Shows total costs for RevUp Force (annual) and Illicium Fractional Management (over selected duration).&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                             </span>&lt;p&gt;&lt;strong&gt;Cost Per Lead (CPL):&lt;/strong&gt; Year 1 Base Investment ÷ Year 1 Qualified Leads. (Excludes Fractional Sales Management Cost).&lt;/p&gt; &lt;p&gt;&lt;strong&gt;Cost Per Acquisition (CPA):&lt;/strong&gt; Year 1 Base Investment ÷ Year 1 New Deals Closed. (Excludes Fractional Sales Management Cost).&lt;/p&gt; &lt;p&gt;&lt;strong&gt;Breakeven:&lt;/strong&gt; The first month where cumulative realized revenue meets or exceeds cumulative monthly costs (incl. RevUp Force &amp; Illicium service costs when active).&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                             </span>&lt;p&gt;&lt;strong&gt;Year 1 ROI:&lt;/strong&gt; ((Year 1 Total Revenue - Year 1 Investment) / Year 1 Investment) x 100%.&lt;/p&gt; &lt;p&gt;&lt;strong&gt;Year 2 ROI:&lt;/strong&gt; ((Year 2 Total Revenue - Year 2 Investment) / Year 2 Investment) x 100%. Year 2 Investment typically only includes base costs (SDR Salary + SaaS + RevUp Force).&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                             </span>&lt;p&gt;&lt;strong&gt;Lifetime Value (LTV) Basis:&lt;/strong&gt; Adjusts calculations for renewals and lifetime ROI. 18m = 1.5x multiplier, 24m = 2x multiplier on initial deal size for value calculations.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                             </span>&lt;p&gt;&lt;strong&gt;Lifetime ROI:&lt;/strong&gt; ((Total Lifetime Value of New Deals Closed in Period - Investment in Period) / Investment in Period) x 100%.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="mt-10 pt-5 border-t border-gray-300 text-center text-gray-500 text-xs"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;p&gt;Disclaimer: This calculator provides estimates based on the parameters entered. Actual results can vary based on market conditions, execution, team performance, and other factors not captured here.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;p class="mt-2"&gt;© &lt;span id="copyright-year"&gt;2025&lt;/span&gt; | Revup Forge ROI Calculator&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>// --- Helper Function to display non-blocking error messages ---</p>
+<p class="p1"><span class="Apple-converted-space">        </span>/**</p>
+<p class="p1"><span class="Apple-converted-space">         </span>* Shows an error message in a designated area on the page.</p>
+<p class="p1"><span class="Apple-converted-space">         </span>* @param {string} message - The error message to display.</p>
+<p class="p1"><span class="Apple-converted-space">         </span>*/</p>
+<p class="p1"><span class="Apple-converted-space">        </span>function showErrorMessage(message) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const errorBox = document.getElementById('error-message-box');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const errorText = document.getElementById('error-message-text');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (errorBox &amp;&amp; errorText) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>errorText.textContent = message;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>errorBox.classList.remove('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>errorBox.style.opacity = '1'; // Ensure it's visible</p>
+<p class="p1"><span class="Apple-converted-space">                </span>// Automatically hide after 5 seconds</p>
+<p class="p1"><span class="Apple-converted-space">                </span>setTimeout(() =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>errorBox.style.opacity = '0'; // Fade out</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>setTimeout(() =&gt; errorBox.classList.add('hidden'), 500); // Hide after fade</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}, 5000);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// --- Helper Function ---</p>
+<p class="p1"><span class="Apple-converted-space">        </span>/**</p>
+<p class="p1"><span class="Apple-converted-space">         </span>* Formats a number using Intl.NumberFormat for thousands separators.</p>
+<p class="p1"><span class="Apple-converted-space">         </span>* Returns '--' if the input is not a valid, finite number.</p>
+<p class="p1"><span class="Apple-converted-space">         </span>* @param {number|string|null|undefined} num - The number to format.</p>
+<p class="p1"><span class="Apple-converted-space">         </span>* @returns {string} The formatted number string or '--'.</p>
+<p class="p1"><span class="Apple-converted-space">         </span>*/</p>
+<p class="p1"><span class="Apple-converted-space">        </span>function formatNumber(num) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>// Check for invalid inputs (null, undefined, NaN, Infinity)</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (num === undefined || num === null || isNaN(num) || !isFinite(num)) return "--";</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const numValue = Number(num); // Ensure it's a number type</p>
+<p class="p1"><span class="Apple-converted-space">            </span>// Use Intl.NumberFormat for locale-aware formatting</p>
+<p class="p1"><span class="Apple-converted-space">            </span>return new Intl.NumberFormat('en-US').format(numValue);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// --- DOM Element References ---</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const form = document.getElementById('roi-form');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>// Input elements grouped for easy access</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const inputs = {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>numberOfSDRs: document.getElementById('numberOfSDRs'),</p>
+<p class="p1"><span class="Apple-converted-space">            </span>sdrMonthlySalary: document.getElementById('sdrMonthlySalary'),</p>
+<p class="p1"><span class="Apple-converted-space">            </span>leadsPerSDRMonth: document.getElementById('leadsPerSDRMonth'),</p>
+<p class="p1"><span class="Apple-converted-space">            </span>monthlySaasTools: document.getElementById('monthlySaasTools'),</p>
+<p class="p1"><span class="Apple-converted-space">            </span>revUpForceCost: document.getElementById('revUpForceCost'),</p>
+<p class="p1"><span class="Apple-converted-space">            </span>includeFractionalSales: document.getElementById('includeFractionalSales'),</p>
+<p class="p1"><span class="Apple-converted-space">            </span>salesMgmtMonthlyCost: document.getElementById('salesMgmtMonthlyCost'),</p>
+<p class="p1"><span class="Apple-converted-space">            </span>fractionalSalesDuration: document.getElementById('fractionalSalesDuration'),</p>
+<p class="p1"><span class="Apple-converted-space">            </span>averageDealSize: document.getElementById('averageDealSize'),</p>
+<p class="p1"><span class="Apple-converted-space">            </span>averageSalesCycle: document.getElementById('averageSalesCycle'),</p>
+<p class="p1"><span class="Apple-converted-space">            </span>leadConversionRate: document.getElementById('leadConversionRate'),</p>
+<p class="p1"><span class="Apple-converted-space">            </span>isTeamFullyRamped: document.getElementById('isTeamFullyRamped'),</p>
+<p class="p1"><span class="Apple-converted-space">            </span>customerLifetimeValue: document.getElementById('customerLifetimeValue'),</p>
+<p class="p1"><span class="Apple-converted-space">        </span>};</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const fractionalInputsContainer = document.getElementById('fractional-inputs-container');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const rampUpNote = document.getElementById('ramp-up-note');</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// Output elements grouped for easy access</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const outputs = {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>// Lead Gen &amp; Costs</p>
+<p class="p1"><span class="Apple-converted-space">            </span>monthlyLeads: document.getElementById('output-monthlyLeads'),</p>
+<p class="p1"><span class="Apple-converted-space">            </span>monthlyLeadsNote: document.getElementById('output-monthlyLeads-note'),</p>
+<p class="p1"><span class="Apple-converted-space">            </span>annualLeads: document.getElementById('output-annualLeads'),</p>
+<p class="p1"><span class="Apple-converted-space">            </span>annualLeadsNote: document.getElementById('output-annualLeads-note'),</p>
+<p class="p1"><span class="Apple-converted-space">            </span>costPerLead: document.getElementById('output-costPerLead'),</p>
+<p class="p1"><span class="Apple-converted-space">            </span>costPerAcquisition: document.getElementById('output-costPerAcquisition'),</p>
+<p class="p1"><span class="Apple-converted-space">            </span>cplNote: document.getElementById('output-cpl-note'),</p>
+<p class="p1"><span class="Apple-converted-space">            </span>cpaNote: document.getElementById('output-cpa-note'),</p>
+<p class="p1"><span class="Apple-converted-space">            </span>// Y1 Performance</p>
+<p class="p1"><span class="Apple-converted-space">            </span>annualPipeline: document.getElementById('output-annualPipeline'),</p>
+<p class="p1"><span class="Apple-converted-space">            </span>firstRevenueMonth: document.getElementById('output-firstRevenueMonth'),</p>
+<p class="p1"><span class="Apple-converted-space">            </span>firstRevenueAmount: document.getElementById('output-firstRevenueAmount'),</p>
+<p class="p1"><span class="Apple-converted-space">            </span>salesCycleDisplay: document.getElementById('output-salesCycleDisplay'),</p>
+<p class="p1"><span class="Apple-converted-space">            </span>year1Deals: document.getElementById('output-year1Deals'),</p>
+<p class="p1"><span class="Apple-converted-space">            </span>conversionRateDisplay: document.getElementById('output-conversionRateDisplay'),</p>
+<p class="p1"><span class="Apple-converted-space">            </span>year1Revenue: document.getElementById('output-year1Revenue'),</p>
+<p class="p1"><span class="Apple-converted-space">            </span>unrealizedRevenueY2: document.getElementById('output-unrealizedRevenueY2'),</p>
+<p class="p1"><span class="Apple-converted-space">            </span>// Y2 Performance</p>
+<p class="p1"><span class="Apple-converted-space">            </span>year2Deals: document.getElementById('output-year2Deals'),</p>
+<p class="p1"><span class="Apple-converted-space">            </span>year2Revenue: document.getElementById('output-year2Revenue'),</p>
+<p class="p1"><span class="Apple-converted-space">            </span>renewalSection: document.getElementById('output-renewal-section'),</p>
+<p class="p1"><span class="Apple-converted-space">            </span>year1RenewalRevenue: document.getElementById('output-year1RenewalRevenue'),</p>
+<p class="p1"><span class="Apple-converted-space">            </span>ltvDisplayRenewal: document.getElementById('output-ltvDisplayRenewal'),</p>
+<p class="p1"><span class="Apple-converted-space">            </span>year2TotalRevenue: document.getElementById('output-year2TotalRevenue'),</p>
+<p class="p1"><span class="Apple-converted-space">            </span>// Financial Analysis</p>
+<p class="p1"><span class="Apple-converted-space">            </span>monthlySDRCost: document.getElementById('output-monthlySDRCost'),</p>
+<p class="p1"><span class="Apple-converted-space">            </span>monthlySaaSCost: document.getElementById('output-monthlySaaSCost'),</p>
+<p class="p1"><span class="Apple-converted-space">            </span>illiciumInvestmentSection: document.getElementById('illicium-investment-section'),</p>
+<p class="p1"><span class="Apple-converted-space">            </span>totalRevupCost: document.getElementById('output-total-revup-cost'),</p>
+<p class="p1"><span class="Apple-converted-space">            </span>illiciumFracTotalCostSection: document.getElementById('output-illiciumFracTotalCost-section'),</p>
+<p class="p1"><span class="Apple-converted-space">            </span>totalIlliciumMgmtCost: document.getElementById('output-total-illicium-mgmt-cost'),</p>
+<p class="p1"><span class="Apple-converted-space">            </span>illiciumMgmtCalcNote: document.getElementById('output-illicium-mgmt-calc-note'),</p>
+<p class="p1"><span class="Apple-converted-space">            </span>sdrCountRevup: document.getElementById('output-sdrCountRevup'),</p>
+<p class="p1"><span class="Apple-converted-space">            </span>revupCostPerSDR: document.getElementById('output-revupCostPerSDR'),</p>
+<p class="p1"><span class="Apple-converted-space">            </span>monthlyTotalCost: document.getElementById('output-monthlyTotalCost'),</p>
+<p class="p1"><span class="Apple-converted-space">            </span>annualInvestment: document.getElementById('output-annualInvestment'),</p>
+<p class="p1"><span class="Apple-converted-space">            </span>fractionalCostY1Note: document.getElementById('output-fractionalCostY1-note'),</p>
+<p class="p1"><span class="Apple-converted-space">            </span>fractionalCostY1: document.getElementById('output-fractionalCostY1'),</p>
+<p class="p1"><span class="Apple-converted-space">            </span>monthsToBreakeven: document.getElementById('output-monthsToBreakeven'),</p>
+<p class="p1"><span class="Apple-converted-space">            </span>// ROI Outputs</p>
+<p class="p1"><span class="Apple-converted-space">            </span>year1ROI: document.getElementById('output-year1ROI'),</p>
+<p class="p1"><span class="Apple-converted-space">            </span>year1InvestmentDisplayROI: document.getElementById('output-year1InvestmentDisplayROI'),</p>
+<p class="p1"><span class="Apple-converted-space">            </span>lifetimeROI1Section: document.getElementById('output-lifetimeROI1-section'),</p>
+<p class="p1"><span class="Apple-converted-space">            </span>lifetimeROI_Year1: document.getElementById('output-lifetimeROI_Year1'),</p>
+<p class="p1"><span class="Apple-converted-space">            </span>ltvDisplayValue1: document.getElementById('output-ltvDisplayValue1'),</p>
+<p class="p1"><span class="Apple-converted-space">            </span>year1RevenueDisplay: document.getElementById('output-year1RevenueDisplay'),</p>
+<p class="p1"><span class="Apple-converted-space">            </span>lifetimeValue1Section: document.getElementById('output-lifetimeValue1-section'),</p>
+<p class="p1"><span class="Apple-converted-space">            </span>year1CustomerValue: document.getElementById('output-year1CustomerValue'),</p>
+<p class="p1"><span class="Apple-converted-space">            </span>year2ROI: document.getElementById('output-year2ROI'),</p>
+<p class="p1"><span class="Apple-converted-space">            </span>year2InvestmentDisplayROI: document.getElementById('output-year2InvestmentDisplayROI'),</p>
+<p class="p1"><span class="Apple-converted-space">            </span>lifetimeROI2Section: document.getElementById('output-lifetimeROI2-section'),</p>
+<p class="p1"><span class="Apple-converted-space">            </span>lifetimeROI_Year2: document.getElementById('output-lifetimeROI_Year2'),</p>
+<p class="p1"><span class="Apple-converted-space">            </span>ltvDisplayValue2: document.getElementById('output-ltvDisplayValue2'),</p>
+<p class="p1"><span class="Apple-converted-space">            </span>year2TotalRevenueDisplay: document.getElementById('output-year2TotalRevenueDisplay'),</p>
+<p class="p1"><span class="Apple-converted-space">            </span>lifetimeValue2Section: document.getElementById('output-lifetimeValue2-section'),</p>
+<p class="p1"><span class="Apple-converted-space">            </span>year2CustomerValue: document.getElementById('output-year2CustomerValue'),</p>
+<p class="p1"><span class="Apple-converted-space">        </span>};</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// Other UI elements</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const explanationContent = document.getElementById('explanation-content');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const toggleExplanationsButton = document.getElementById('toggle-explanations');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const downloadPdfButton = document.getElementById('download-pdf-button');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const pdfContentArea = document.getElementById('pdf-content-area');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const expSalesCycle = document.getElementById('exp-sales-cycle');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const expConversionRate = document.getElementById('exp-conversion-rate');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>document.getElementById('copyright-year').textContent = new Date().getFullYear();</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// --- Calculation Logic ---</p>
+<p class="p1"><span class="Apple-converted-space">        </span>function calculateROI() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>// Get values from form inputs</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const numberOfSDRs = parseInt(inputs.numberOfSDRs.value) || 0;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const sdrMonthlySalary = parseFloat(inputs.sdrMonthlySalary.value) || 0;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const leadsPerSDRMonth = parseInt(inputs.leadsPerSDRMonth.value) || 0;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const monthlySaasTools = parseFloat(inputs.monthlySaasTools.value) || 0;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const revUpForceCostPerSDR = parseFloat(inputs.revUpForceCost.value) || 0;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const includeFractionalSales = inputs.includeFractionalSales.checked;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const salesMgmtMonthlyCost = includeFractionalSales ? (parseFloat(inputs.salesMgmtMonthlyCost.value) || 0) : 0;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const fractionalSalesDuration = includeFractionalSales ? (parseInt(inputs.fractionalSalesDuration.value) || 0) : 0;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const averageDealSize = parseFloat(inputs.averageDealSize.value) || 0;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const averageSalesCycle = parseInt(inputs.averageSalesCycle.value) || 0;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const leadConversionRate = parseFloat(inputs.leadConversionRate.value) || 0;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const isTeamFullyRamped = inputs.isTeamFullyRamped.checked;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const customerLifetimeValue = inputs.customerLifetimeValue.value;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// --- Cost Calculations ---</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const monthlySDRBaseSalaryCost = numberOfSDRs * sdrMonthlySalary;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const monthlySaasCost = numberOfSDRs * monthlySaasTools;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const monthlyRevUpForceCost = numberOfSDRs * revUpForceCostPerSDR;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const monthlyIlliciumCostActive = salesMgmtMonthlyCost;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const monthlyBaseCost = monthlySDRBaseSalaryCost + monthlySaasCost + monthlyRevUpForceCost;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const illiciumMonthsYear1 = includeFractionalSales ? Math.min(fractionalSalesDuration, 12) : 0;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const illiciumCostYear1 = illiciumMonthsYear1 * monthlyIlliciumCostActive;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const year1BaseInvestment = monthlyBaseCost * 12; // Investment excluding fractional mgmt</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const year1Investment = year1BaseInvestment + illiciumCostYear1; // Total Y1 investment including fractional mgmt</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const year2Investment = monthlyBaseCost * 12; // Year 2 Investment = Base costs only</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const averageMonthlySDRCostY1 = monthlySDRBaseSalaryCost;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const averageMonthlySaaSCostY1 = monthlySaasCost;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const averageMonthlyTotalCostY1 = year1Investment &gt; 0 ? year1Investment / 12 : 0;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const totalAnnualRevUpForceCost = monthlyRevUpForceCost * 12;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const totalIlliciumFractionalCost = includeFractionalSales ? salesMgmtMonthlyCost * fractionalSalesDuration : 0;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// --- Lead Generation Calculations ---</p>
+<p class="p1"><span class="Apple-converted-space">            </span>let monthlyLeadsArray = Array(24).fill(0);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>let totalAnnualLeadsYear1 = 0;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const fullyRampedMonthlyLeads = numberOfSDRs * leadsPerSDRMonth;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const isRampingUp = !isTeamFullyRamped;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// UPDATED Ramp-up Logic (0 leads M1, 60% M2-4, 100% M5+)</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (isTeamFullyRamped) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>monthlyLeadsArray.fill(fullyRampedMonthlyLeads);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>} else {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const rampingMonthlyLeads = fullyRampedMonthlyLeads * 0.6; // 60% productivity</p>
+<p class="p1"><span class="Apple-converted-space">                </span>for (let i = 0; i &lt; 24; i++) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>if (i === 0) { // Month 1 (index 0)</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>monthlyLeadsArray[i] = 0; // Zero leads</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>} else if (i &gt;= 1 &amp;&amp; i &lt;= 3) { // Months 2-4 (indices 1-3)</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>monthlyLeadsArray[i] = rampingMonthlyLeads; // 60% productivity</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>} else { // Month 5 onwards (index 4+)</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>monthlyLeadsArray[i] = fullyRampedMonthlyLeads; // 100% productivity</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>totalAnnualLeadsYear1 = monthlyLeadsArray.slice(0, 12).reduce((sum, leads) =&gt; sum + leads, 0);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const annualPipelineYear1 = totalAnnualLeadsYear1 * averageDealSize;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// --- Revenue and Deal Closure Calculations ---</p>
+<p class="p1"><span class="Apple-converted-space">            </span>let monthlyDealsArray = Array(36).fill(0); // Extended to 36 for up to 12m sales cycle + 24m lead gen</p>
+<p class="p1"><span class="Apple-converted-space">            </span>let monthlyRevenueArray = Array(36).fill(0);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>for (let leadGenMonth = 0; leadGenMonth &lt; 24; leadGenMonth++) { // Iterate through 24 months of lead generation</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const leadsInMonth = monthlyLeadsArray[leadGenMonth];</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const dealsFromThisMonth = leadsInMonth * (leadConversionRate / 100);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const revenueFromThisMonth = dealsFromThisMonth * averageDealSize;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const revenueRealizationMonth = leadGenMonth + averageSalesCycle;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (revenueRealizationMonth &lt; monthlyRevenueArray.length) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>monthlyDealsArray[revenueRealizationMonth] += dealsFromThisMonth;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>monthlyRevenueArray[revenueRealizationMonth] += revenueFromThisMonth;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// --- Aggregate Year 1 and Year 2 Performance ---</p>
+<p class="p1"><span class="Apple-converted-space">            </span>let year1Deals = 0, year1Revenue = 0, year2Deals = 0, year2NewRevenue = 0;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>for (let month = 0; month &lt; 12; month++) { // Deals/Revenue closing in months 1-12</p>
+<p class="p1"><span class="Apple-converted-space">                </span>year1Deals += monthlyDealsArray[month];</p>
+<p class="p1"><span class="Apple-converted-space">                </span>year1Revenue += monthlyRevenueArray[month];</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>for (let month = 12; month &lt; 24; month++) { // Deals/Revenue closing in months 13-24</p>
+<p class="p1"><span class="Apple-converted-space">                </span>year2Deals += monthlyDealsArray[month];</p>
+<p class="p1"><span class="Apple-converted-space">                </span>year2NewRevenue += monthlyRevenueArray[month];</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// --- Unrealized Revenue Calculation (Y1 leads closing in Y2) ---</p>
+<p class="p1"><span class="Apple-converted-space">            </span>let unrealizedRevenueY2 = 0;</p>
+<p class="p1"><span class="Apple-converted-space">             </span>for (let leadGenMonth = 0; leadGenMonth &lt; 12; leadGenMonth++) { // Leads generated in Y1</p>
+<p class="p1"><span class="Apple-converted-space">                 </span>const revenueRealizationMonth = leadGenMonth + averageSalesCycle;</p>
+<p class="p1"><span class="Apple-converted-space">                 </span>if (revenueRealizationMonth &gt;= 12 &amp;&amp; revenueRealizationMonth &lt; 24) { // Closing in Y2</p>
+<p class="p1"><span class="Apple-converted-space">                     </span>const leadsInMonth = monthlyLeadsArray[leadGenMonth];</p>
+<p class="p1"><span class="Apple-converted-space">                     </span>const dealsFromThisMonth = leadsInMonth * (leadConversionRate / 100);</p>
+<p class="p1"><span class="Apple-converted-space">                     </span>unrealizedRevenueY2 += dealsFromThisMonth * averageDealSize;</p>
+<p class="p1"><span class="Apple-converted-space">                 </span>}</p>
+<p class="p1"><span class="Apple-converted-space">             </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// --- Breakeven Calculation ---</p>
+<p class="p1"><span class="Apple-converted-space">            </span>let cumulativeCost = 0, cumulativeRevenue = 0, breakevenMonth = -1;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>for (let month = 0; month &lt; 36; month++) { // Calculate over 36 months to capture longer sales cycles</p>
+<p class="p1"><span class="Apple-converted-space">                </span>let costThisMonth = monthlyBaseCost;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>// Add Illicium cost only if active during this month (within the first 12 months AND within its duration)</p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (includeFractionalSales &amp;&amp; month &lt; fractionalSalesDuration &amp;&amp; month &lt; 12) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>costThisMonth += monthlyIlliciumCostActive;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                </span>cumulativeCost += costThisMonth;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>cumulativeRevenue += monthlyRevenueArray[month];</p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (cumulativeRevenue &gt;= cumulativeCost &amp;&amp; breakevenMonth === -1) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>breakevenMonth = month + 1;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const displayBreakeven = breakevenMonth === -1 ? "36+" : breakevenMonth;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// --- First Revenue Calculation ---</p>
+<p class="p1"><span class="Apple-converted-space">            </span>let firstRevenueMonth = 0, firstRevenueAmount = 0;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>for (let month = 0; month &lt; monthlyRevenueArray.length; month++) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (monthlyRevenueArray[month] &gt; 0) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>firstRevenueMonth = month + 1;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>firstRevenueAmount = monthlyRevenueArray[month];</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>break;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// --- LTV and Renewal Calculations ---</p>
+<p class="p1"><span class="Apple-converted-space">            </span>let year1RenewalRevenue = 0, lifetimeMultiplier = 1;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const customerLifetimeValueNum = parseInt(customerLifetimeValue);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (!isNaN(customerLifetimeValueNum) &amp;&amp; customerLifetimeValueNum &gt; 12) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (customerLifetimeValueNum === 18) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>year1RenewalRevenue = year1Deals * averageDealSize * 0.5;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>lifetimeMultiplier = 1.5;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>} else if (customerLifetimeValueNum === 24) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>year1RenewalRevenue = year1Deals * averageDealSize * 1.0;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>lifetimeMultiplier = 2;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const year2TotalRevenue = year2NewRevenue + year1RenewalRevenue;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// --- Cost Per Metrics (Based on Year 1 BASE Investment) ---</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const costPerLead = totalAnnualLeadsYear1 &gt; 0 ? year1BaseInvestment / totalAnnualLeadsYear1 : 0;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const costPerAcquisition = year1Deals &gt; 0 ? year1BaseInvestment / year1Deals : 0;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// --- ROI Calculations ---</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const year1Profit = year1Revenue - year1Investment;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const year1ROI = year1Investment &gt; 0 ? (year1Profit / year1Investment) * 100 : 0;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const year2Profit = year2TotalRevenue - year2Investment; // Year 2 investment is base costs</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const year2ROI = year2Investment &gt; 0 ? (year2Profit / year2Investment) * 100 : 0;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// --- Lifetime Value Adjusted Metrics ---</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const year1CustomerValue = year1Deals * averageDealSize * lifetimeMultiplier;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const year2CustomerValue = year2Deals * averageDealSize * lifetimeMultiplier; // LTV of deals closed in Y2</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const lifetimeROI_Year1 = year1Investment &gt; 0 ? ((year1CustomerValue - year1Investment) / year1Investment) * 100 : 0;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const lifetimeROI_Year2 = year2Investment &gt; 0 ? ((year2CustomerValue - year2Investment) / year2Investment) * 100 : 0;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// --- Update Output Elements in the HTML ---</p>
+<p class="p1"><span class="Apple-converted-space">            </span>// Lead Gen &amp; Costs</p>
+<p class="p1"><span class="Apple-converted-space">            </span>let avgMonthlyLeadsDisplay = fullyRampedMonthlyLeads;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (isRampingUp) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>// A more representative average if ramping: average of first ramping month and first fully ramped month</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const firstRampingMonthLeads = monthlyLeadsArray[1] || 0; // Month 2 (index 1)</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const firstFullMonthLeads = monthlyLeadsArray[4] || fullyRampedMonthlyLeads; // Month 5 (index 4) or fully ramped if no ramp</p>
+<p class="p1"><span class="Apple-converted-space">                </span>avgMonthlyLeadsDisplay = (firstRampingMonthLeads + firstFullMonthLeads) / 2;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>outputs.monthlyLeads.textContent = formatNumber(Math.round(avgMonthlyLeadsDisplay));</p>
+<p class="p1"><span class="Apple-converted-space">            </span>outputs.monthlyLeadsNote.classList.toggle('hidden', !isRampingUp);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>outputs.annualLeads.textContent = formatNumber(Math.round(totalAnnualLeadsYear1));</p>
+<p class="p1"><span class="Apple-converted-space">            </span>outputs.annualLeadsNote.classList.toggle('hidden', !isRampingUp);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>outputs.costPerLead.textContent = '$' + formatNumber(Math.round(costPerLead));</p>
+<p class="p1"><span class="Apple-converted-space">            </span>outputs.costPerAcquisition.textContent = '$' + formatNumber(Math.round(costPerAcquisition));</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const showCplCpaNote = includeFractionalSales &amp;&amp; illiciumCostYear1 &gt; 0;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>outputs.cplNote.classList.toggle('hidden', !showCplCpaNote);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>outputs.cpaNote.classList.toggle('hidden', !showCplCpaNote);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// Y1 Performance</p>
+<p class="p1"><span class="Apple-converted-space">            </span>outputs.annualPipeline.textContent = '$' + formatNumber(Math.round(annualPipelineYear1));</p>
+<p class="p1"><span class="Apple-converted-space">            </span>outputs.firstRevenueMonth.textContent = firstRevenueMonth &gt; 0 ? formatNumber(firstRevenueMonth) : '--';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>outputs.firstRevenueAmount.textContent = formatNumber(Math.round(firstRevenueAmount));</p>
+<p class="p1"><span class="Apple-converted-space">            </span>outputs.salesCycleDisplay.textContent = averageSalesCycle;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>outputs.year1Deals.textContent = formatNumber(Math.round(year1Deals));</p>
+<p class="p1"><span class="Apple-converted-space">            </span>outputs.conversionRateDisplay.textContent = leadConversionRate;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>outputs.year1Revenue.textContent = '$' + formatNumber(Math.round(year1Revenue));</p>
+<p class="p1"><span class="Apple-converted-space">            </span>outputs.unrealizedRevenueY2.textContent = '$' + formatNumber(Math.round(unrealizedRevenueY2));</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// Y2 Performance</p>
+<p class="p1"><span class="Apple-converted-space">            </span>outputs.year2Deals.textContent = formatNumber(Math.round(year2Deals));</p>
+<p class="p1"><span class="Apple-converted-space">            </span>outputs.year2Revenue.textContent = '$' + formatNumber(Math.round(year2NewRevenue));</p>
+<p class="p1"><span class="Apple-converted-space">            </span>outputs.renewalSection.classList.toggle('hidden', year1RenewalRevenue &lt;= 0);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>outputs.year1RenewalRevenue.textContent = '$' + formatNumber(Math.round(year1RenewalRevenue));</p>
+<p class="p1"><span class="Apple-converted-space">            </span>outputs.ltvDisplayRenewal.textContent = customerLifetimeValueNum;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>outputs.year2TotalRevenue.textContent = '$' + formatNumber(Math.round(year2TotalRevenue));</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// Financial Analysis</p>
+<p class="p1"><span class="Apple-converted-space">            </span>outputs.monthlySDRCost.textContent = '$' + formatNumber(Math.round(averageMonthlySDRCostY1));</p>
+<p class="p1"><span class="Apple-converted-space">            </span>outputs.monthlySaaSCost.textContent = '$' + formatNumber(Math.round(averageMonthlySaaSCostY1));</p>
+<p class="p1"><span class="Apple-converted-space">            </span>outputs.illiciumInvestmentSection.style.display = (includeFractionalSales || monthlyRevUpForceCost &gt; 0) ? 'block' : 'none';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>outputs.totalRevupCost.textContent = '$' + formatNumber(Math.round(totalAnnualRevUpForceCost));</p>
+<p class="p1"><span class="Apple-converted-space">            </span>outputs.sdrCountRevup.textContent = numberOfSDRs;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>outputs.revupCostPerSDR.textContent = formatNumber(revUpForceCostPerSDR);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>outputs.illiciumFracTotalCostSection.style.display = includeFractionalSales ? 'block' : 'none';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>outputs.totalIlliciumMgmtCost.textContent = '$' + formatNumber(Math.round(totalIlliciumFractionalCost));</p>
+<p class="p1"><span class="Apple-converted-space">            </span>outputs.illiciumMgmtCalcNote.textContent = `($${formatNumber(salesMgmtMonthlyCost)}/mo x ${fractionalSalesDuration} months)`;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>outputs.monthlyTotalCost.textContent = '$' + formatNumber(Math.round(averageMonthlyTotalCostY1));</p>
+<p class="p1"><span class="Apple-converted-space">            </span>outputs.annualInvestment.textContent = '$' + formatNumber(Math.round(year1Investment));</p>
+<p class="p1"><span class="Apple-converted-space">            </span>outputs.fractionalCostY1Note.style.display = includeFractionalSales &amp;&amp; illiciumCostYear1 &gt; 0 ? 'block' : 'none';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>outputs.fractionalCostY1.textContent = formatNumber(Math.round(illiciumCostYear1));</p>
+<p class="p1"><span class="Apple-converted-space">            </span>outputs.monthsToBreakeven.textContent = displayBreakeven;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// ROI Section</p>
+<p class="p1"><span class="Apple-converted-space">            </span>outputs.year1InvestmentDisplayROI.textContent = '$' + formatNumber(Math.round(year1Investment));</p>
+<p class="p1"><span class="Apple-converted-space">            </span>outputs.year1RevenueDisplay.textContent = '$' + formatNumber(Math.round(year1Revenue));</p>
+<p class="p1"><span class="Apple-converted-space">            </span>outputs.year1ROI.textContent = formatNumber(Math.round(year1ROI)) + '%';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>outputs.lifetimeValue1Section.classList.toggle('hidden', lifetimeMultiplier &lt;= 1);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>outputs.year1CustomerValue.textContent = '$' + formatNumber(Math.round(year1CustomerValue));</p>
+<p class="p1"><span class="Apple-converted-space">            </span>outputs.ltvDisplayValue1.textContent = customerLifetimeValueNum;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>outputs.lifetimeROI1Section.classList.toggle('hidden', lifetimeMultiplier &lt;= 1);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>outputs.lifetimeROI_Year1.textContent = formatNumber(Math.round(lifetimeROI_Year1)) + '%';</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>outputs.year2InvestmentDisplayROI.textContent = '$' + formatNumber(Math.round(year2Investment));</p>
+<p class="p1"><span class="Apple-converted-space">            </span>outputs.year2TotalRevenueDisplay.textContent = '$' + formatNumber(Math.round(year2TotalRevenue));</p>
+<p class="p1"><span class="Apple-converted-space">            </span>outputs.year2ROI.textContent = formatNumber(Math.round(year2ROI)) + '%';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>outputs.lifetimeValue2Section.classList.toggle('hidden', lifetimeMultiplier &lt;= 1);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>outputs.year2CustomerValue.textContent = '$' + formatNumber(Math.round(year2CustomerValue));</p>
+<p class="p1"><span class="Apple-converted-space">            </span>outputs.ltvDisplayValue2.textContent = customerLifetimeValueNum;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>outputs.lifetimeROI2Section.classList.toggle('hidden', lifetimeMultiplier &lt;= 1);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>outputs.lifetimeROI_Year2.textContent = formatNumber(Math.round(lifetimeROI_Year2)) + '%';</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// Update dynamic values in the explanation section</p>
+<p class="p1"><span class="Apple-converted-space">            </span>expSalesCycle.textContent = averageSalesCycle;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>expConversionRate.textContent = leadConversionRate;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// --- PDF Generation Logic ---</p>
+<p class="p1"><span class="Apple-converted-space">        </span>function generatePdf() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>console.log("Attempting to generate PDF...");</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (!window.jspdf || !window.html2canvas) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>console.error("jsPDF or html2canvas not loaded!");</p>
+<p class="p1"><span class="Apple-converted-space">                </span>showErrorMessage("PDF generation library not loaded. Please try again or refresh.");</p>
+<p class="p1"><span class="Apple-converted-space">                </span>return;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const { jsPDF } = window.jspdf;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const elementToCapture = pdfContentArea; // The main container for all content</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// Temporarily show explanations if hidden, for PDF capture</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const explanationWasHidden = !explanationContent.classList.contains('show');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (explanationWasHidden) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>explanationContent.classList.add('show');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>const options = {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>scale: 2, // Higher scale for better quality</p>
+<p class="p1"><span class="Apple-converted-space">                </span>useCORS: true,</p>
+<p class="p1"><span class="Apple-converted-space">                </span>logging: true,</p>
+<p class="p1"><span class="Apple-converted-space">                </span>backgroundColor: '#ffffff', // Ensure background is white for PDF</p>
+<p class="p1"><span class="Apple-converted-space">                </span>scrollX: 0, // Ensure we capture from the top-left</p>
+<p class="p1"><span class="Apple-converted-space">                </span>scrollY: -window.scrollY, // Account for current page scroll</p>
+<p class="p1"><span class="Apple-converted-space">                </span>windowWidth: elementToCapture.scrollWidth, // Capture full width</p>
+<p class="p1"><span class="Apple-converted-space">                </span>windowHeight: elementToCapture.scrollHeight // Capture full height</p>
+<p class="p1"><span class="Apple-converted-space">            </span>};</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>html2canvas(elementToCapture, options).then(canvas =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>console.log("Canvas generated by html2canvas. Dimensions:", canvas.width, "x", canvas.height);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const imgData = canvas.toDataURL('image/png', 1.0); // Use full quality PNG</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const pdf = new jsPDF({</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>orientation: 'p', // portrait</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>unit: 'mm', <span class="Apple-converted-space">      </span>// millimeters</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>format: 'a4'<span class="Apple-converted-space">      </span>// A4 page size</p>
+<p class="p1"><span class="Apple-converted-space">                </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>const pdfWidth = pdf.internal.pageSize.getWidth();</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const pdfHeight = pdf.internal.pageSize.getHeight();</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const margin = 10; // 10mm margin on all sides</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>const imgWidth = canvas.width;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const imgHeight = canvas.height;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const aspectRatio = imgWidth / imgHeight;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>let pdfImgWidth = pdfWidth - (2 * margin);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>let pdfImgHeight = pdfImgWidth / aspectRatio;</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>let totalPdfPages = Math.ceil(pdfImgHeight / (pdfHeight - 2 * margin));</p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (totalPdfPages === 0) totalPdfPages = 1; // Ensure at least one page</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>console.log(`PDF Page: ${pdfWidth}x${pdfHeight}mm. Image to fit: ${pdfImgWidth.toFixed(2)}x${pdfImgHeight.toFixed(2)}mm. Total Pages: ${totalPdfPages}`);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>let currentY = 0; // Current Y position on the source canvas image</p>
+<p class="p1"><span class="Apple-converted-space">                </span>for (let i = 0; i &lt; totalPdfPages; i++) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>if (i &gt; 0) {</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>pdf.addPage();</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>// Calculate the height of the slice of the canvas to draw on this PDF page</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>let sliceHeightOnCanvas = (pdfHeight - 2 * margin) * (imgHeight / pdfImgHeight);</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>if (currentY + sliceHeightOnCanvas &gt; imgHeight) {</p>
+<p class="p1"><span class="Apple-converted-space">                         </span>sliceHeightOnCanvas = imgHeight - currentY;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>}</p>
+<p class="p2"><span class="Apple-converted-space">                    </span></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>// Create a temporary canvas to draw the slice</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>const tempCanvas = document.createElement('canvas');</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>tempCanvas.width = imgWidth;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>tempCanvas.height = sliceHeightOnCanvas;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>const tempCtx = tempCanvas.getContext('2d');</p>
+<p class="p2"><span class="Apple-converted-space">                    </span></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>// Draw the slice from the main canvas to the temporary canvas</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>tempCtx.drawImage(canvas, 0, currentY, imgWidth, sliceHeightOnCanvas, 0, 0, imgWidth, sliceHeightOnCanvas);</p>
+<p class="p2"><span class="Apple-converted-space">                    </span></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>const sliceImgData = tempCanvas.toDataURL('image/png', 1.0);</p>
+<p class="p2"><span class="Apple-converted-space">                    </span></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>// Calculate the height of this slice on the PDF page</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>let slicePdfHeight = pdfImgWidth / (imgWidth / sliceHeightOnCanvas);</p>
+<p class="p1"><span class="Apple-converted-space">                     </span>if (slicePdfHeight &gt; pdfHeight - 2 * margin) {</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>slicePdfHeight = pdfHeight - 2 * margin;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>pdf.addImage(sliceImgData, 'PNG', margin, margin, pdfImgWidth, slicePdfHeight);</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>currentY += sliceHeightOnCanvas;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>if (currentY &gt;= imgHeight) break; // Stop if we've drawn the whole image</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>// Restore explanation visibility if it was changed</p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (explanationWasHidden) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>explanationContent.classList.remove('show');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>pdf.save('RevupForge_ROI_Results.pdf');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>console.log("PDF saved");</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}).catch(error =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>console.error("Error generating PDF: ", error);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>showErrorMessage("Could not generate PDF. Check browser console for details.");</p>
+<p class="p1"><span class="Apple-converted-space">                 </span>// Restore explanation visibility if it was changed</p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (explanationWasHidden) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>explanationContent.classList.remove('show');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>});</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// --- Event Listeners ---</p>
+<p class="p1"><span class="Apple-converted-space">        </span>form.addEventListener('input', calculateROI); // Recalculate on any input field change</p>
+<p class="p1"><span class="Apple-converted-space">        </span>form.addEventListener('change', calculateROI); // Recalculate on select/checkbox change</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>inputs.includeFractionalSales.addEventListener('change', () =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const isDisabled = !inputs.includeFractionalSales.checked;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>inputs.salesMgmtMonthlyCost.disabled = isDisabled;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>inputs.fractionalSalesDuration.disabled = isDisabled;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>fractionalInputsContainer.classList.toggle('illicium-inputs-disabled', isDisabled);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>// If unchecked, clear the values for disabled fields or reset to default</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (isDisabled) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>// inputs.salesMgmtMonthlyCost.value = ''; // Or a default value</p>
+<p class="p1"><span class="Apple-converted-space">                </span>// inputs.fractionalSalesDuration.value = ''; // Or a default value</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>calculateROI(); // Recalculate after state change</p>
+<p class="p1"><span class="Apple-converted-space">        </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>inputs.isTeamFullyRamped.addEventListener('change', () =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>rampUpNote.classList.toggle('hidden', inputs.isTeamFullyRamped.checked);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>calculateROI(); // Recalculate after state change</p>
+<p class="p1"><span class="Apple-converted-space">        </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>toggleExplanationsButton.addEventListener('click', () =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const isShown = explanationContent.classList.toggle('show');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>toggleExplanationsButton.textContent = isShown ? "Hide Calculation Explanations" : "Show Calculation Explanations";</p>
+<p class="p1"><span class="Apple-converted-space">        </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>downloadPdfButton.addEventListener('click', generatePdf);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// --- Initial Calculation on Load ---</p>
+<p class="p1"><span class="Apple-converted-space">        </span>function initializeUIState() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>// Set initial disabled state for Illicium inputs based on checkbox default</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const isIlliciumDisabled = !inputs.includeFractionalSales.checked;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>inputs.salesMgmtMonthlyCost.disabled = isIlliciumDisabled;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>inputs.fractionalSalesDuration.disabled = isIlliciumDisabled;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>fractionalInputsContainer.classList.toggle('illicium-inputs-disabled', isIlliciumDisabled);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// Set initial visibility for ramp-up note based on checkbox default</p>
+<p class="p1"><span class="Apple-converted-space">            </span>rampUpNote.classList.toggle('hidden', inputs.isTeamFullyRamped.checked);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// Perform initial calculation to populate results based on default form values</p>
+<p class="p1"><span class="Apple-converted-space">            </span>calculateROI();</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// Ensure the DOM is fully loaded before initializing UI state and calculations</p>
+<p class="p1"><span class="Apple-converted-space">        </span>document.addEventListener('DOMContentLoaded', initializeUIState);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/script&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;/body&gt;</p>
+<p class="p1">&lt;/html&gt;</p>
+</body>
+</html>
